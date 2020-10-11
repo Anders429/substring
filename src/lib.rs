@@ -1,6 +1,6 @@
 //! Substring method for string types.
 //!
-//! This crate provides a `substring` method on both `String` and `&str` types. The method takes a 
+//! This crate provides a `substring` method on both `String` and `&str` types. The method takes a
 //! start and end character index and returns a string slice of the characters within that range.
 //!
 //! The method is provided via the `Substring` trait which is implemented on both `String` and
@@ -9,7 +9,7 @@
 //! # Example
 //! ```
 //! use substring::Substring;
-//! 
+//!
 //! // Works on a string slice.
 //! assert_eq!("foobar".substring(2,5), "oba");
 //!
@@ -82,7 +82,7 @@ impl Substring for str {
     /// Example:
     /// ```
     /// use substring::Substring;
-    /// 
+    ///
     /// assert_eq!("foobar".substring(2,5), "oba");
     /// ```
     fn substring(&self, start_index: usize, end_index: usize) -> &str {
@@ -93,25 +93,25 @@ impl Substring for str {
 #[cfg(test)]
 mod tests {
     use crate::Substring;
-    
+
     #[test]
     fn test_substring() {
         assert_eq!("foobar".substring(0, 3), "foo");
         assert_eq!("foobar".to_string().substring(3, 6), "bar");
     }
-    
+
     #[test]
     fn test_out_of_bounds() {
         assert_eq!("foobar".substring(0, 10), "foobar");
         assert_eq!("foobar".to_string().substring(6, 10), "");
     }
-    
+
     #[test]
     fn test_start_less_than_end() {
         assert_eq!("foobar".substring(3, 2), "");
         assert_eq!("foobar".to_string().substring(3, 2), "");
     }
-    
+
     #[test]
     fn test_start_and_end_equal() {
         assert_eq!("foobar".substring(3, 3), "");
