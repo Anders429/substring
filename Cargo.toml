@@ -1,0 +1,10 @@
+[package]
+name = "substring"
+version = "1.0.0"
+authors = ["Anders Evensen"]
+edition = "2018"
+description = "A substring method for string types."
+license = "MIT OR Apache-2.0"
+keywords = ["substring", "string", "substr", "str", "substrings"]
+categories = ["text-processing", "parsing", "algorithms"]
+readme = "README.md"
