@@ -10,7 +10,7 @@ The method is provided via the `Substring` trait which is implemented on both `S
 To use this crate, simply bring the `Substring` trait into scope and call the `substring` method on
 your string types.
 
-```
+```rust
 use substring::Substring;
 
 assert_eq!("hello, world!".substring(7, 12), "world");
