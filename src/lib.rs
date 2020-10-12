@@ -90,10 +90,4 @@ mod tests {
     fn test_start_and_end_equal() {
         assert_eq!("foobar".substring(3, 3), "");
     }
-    
-    #[test]
-    fn test_std_string() {
-        // Make sure std::String substrings work too.
-        assert_eq!("foobar".to_string().substring(3, 6), "bar");
-    }
 }
