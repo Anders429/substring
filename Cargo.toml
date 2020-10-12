@@ -1,11 +1,11 @@
 [package]
 name = "substring"
-version = "1.1.0"
+version = "1.1.1"
 authors = ["Anders Evensen"]
 edition = "2018"
 description = "A substring method for string types."
 license = "MIT OR Apache-2.0"
 keywords = ["substring", "string", "substr", "str", "substrings"]
-categories = ["text-processing", "parsing", "algorithms"]
+categories = ["text-processing", "parsing", "algorithms", "no-std"]
 readme = "README.md"
 repository = "https://github.com/Anders429/substring"
