@@ -1,3 +1,6 @@
+![Crates.io](https://img.shields.io/crates/v/substring)
+![Docs.rs](https://docs.rs/substring/badge.svg)
+
 Substring method for string types.
 
 This crate provides a `substring` method on Rust string types. The method takes a start and end
