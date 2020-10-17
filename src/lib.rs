@@ -81,4 +81,9 @@ mod tests {
     fn test_start_and_end_equal() {
         assert_eq!("foobar".substring(3, 3), "");
     }
+    
+    #[test]
+    fn test_multiple_byte_characters() {
+        assert_eq!("fõøbα®".substring(2, 5), "øbα");
+    }
 }
