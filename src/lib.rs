@@ -16,9 +16,9 @@
 //! assert_eq!("foobar".to_string().substring(1,6), "oobar");
 //! ```
 //!
-//! As Rust strings are UTF-8, the algorithm for finding a character substring is `O(n)`, where `n`
-//! is the byte length of the string. This is due to characters not being of predictible byte
-//! lengths.
+//! As Rust strings are UTF-8 encoded, the algorithm for finding a character substring is `O(n)`,
+//! where `n` is the byte length of the string. This is due to characters not being of predictible
+//! byte lengths.
 
 /// Provides a `substring` method.
 ///
