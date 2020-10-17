@@ -46,23 +46,14 @@ impl Substring for str {
     /// assert_eq!("foobar".substring(2,5), "oba");
     /// ```
     fn substring(&self, start_index: usize, end_index: usize) -> &str {
-        if end_index < start_index {
+        if end_index <= start_index {
             return "";
         }
-
-        let mut start_byte_index = self.len();
-        let mut end_byte_index = self.len();
-        for (char_index, (byte_index, _byte)) in self.char_indices().enumerate() {
-            if char_index == start_index {
-                start_byte_index = byte_index;
-            }
-            if char_index == end_index {
-                end_byte_index = byte_index;
-                break;
-            }
-        }
-
-        &self[start_byte_index..end_byte_index]
+        
+        let mut indices = self.char_indices();
+        let (start_byte, _start_char) = indices.nth(start_index).unwrap_or((self.len(), ' '));
+        let (end_byte, _end_char) = indices.nth(end_index - start_index - 1).unwrap_or((self.len(), ' '));
+        &self[start_byte..end_byte]
     }
 }
 
