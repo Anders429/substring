@@ -1,4 +1,5 @@
 [![Crates.io](https://img.shields.io/crates/v/substring)](https://crates.io/crates/substring)
+![Crates.io](https://img.shields.io/crates/l/substring)
 [![Docs.rs](https://docs.rs/substring/badge.svg)](https://docs.rs/substring)
 
 Substring method for string types.
