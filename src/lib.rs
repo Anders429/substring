@@ -49,11 +49,13 @@ impl Substring for str {
         if end_index <= start_index {
             return "";
         }
-        
-        let mut indices = self.char_indices();
-        let (start_byte, _start_char) = indices.nth(start_index).unwrap_or((self.len(), ' '));
-        let (end_byte, _end_char) = indices.nth(end_index - start_index - 1).unwrap_or((self.len(), ' '));
-        &self[start_byte..end_byte]
+
+        let mut indices = self.char_indices().map(|(index, _char)| index);
+
+        &self[indices.nth(start_index).unwrap_or(self.len())
+            ..indices
+                .nth(end_index - start_index - 1)
+                .unwrap_or(self.len())]
     }
 }
 
@@ -81,7 +83,7 @@ mod tests {
     fn test_start_and_end_equal() {
         assert_eq!("foobar".substring(3, 3), "");
     }
-    
+
     #[test]
     fn test_multiple_byte_characters() {
         assert_eq!("fõøbα®".substring(2, 5), "øbα");
