@@ -1,6 +1,6 @@
 [package]
 name = "substring"
-version = "1.2.2"
+version = "1.2.3"
 authors = ["Anders Evensen"]
 edition = "2018"
 description = "A substring method for string types."
