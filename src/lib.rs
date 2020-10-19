@@ -31,7 +31,7 @@
 //! assert_eq!("y̆".substring(1, 2), "\u{0306}")  // The diacritical mark counts as its own character.
 //! ```
 //!
-//! The above example occurs because "y̆"" is technically made up of two UTF-8 scalar values.
+//! The above example occurs because "y̆" is technically made up of two UTF-8 scalar values.
 
 /// Provides a `substring` method.
 ///
