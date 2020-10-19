@@ -52,13 +52,15 @@ impl Substring for str {
 
         let mut indices = self.char_indices();
 
+        let obtain_index = |(index, _char)| index;
+
         &self[indices
             .nth(start_index)
-            .map(|(index, _char)| index)
+            .map(&obtain_index)
             .unwrap_or(self.len())
             ..indices
                 .nth(end_index - start_index - 1)
-                .map(|(index, _char)| index)
+                .map(&obtain_index)
                 .unwrap_or(self.len())]
     }
 }
