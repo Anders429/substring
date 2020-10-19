@@ -26,15 +26,15 @@ As Rust strings are UTF-8 encoded, the algorithm for finding a character substri
 complexity `O(n)`, where `n` is the byte length of the string. This is due to characters not being
 of predictible byte lengths.
 
-# Caution
+# Note
 The indexing of substrings is based on Unicode Scalar Value. As such, substrings may not always
 match your intuition:
 
 ```rust
 use substring::Substring;
 
-assert_eq!("y̆".substring(0, 1), "y");  // As opposed to "y̆".
-assert_eq!("y̆".substring(1, 2), "\u{0306}")  // The diacritical mark counts as its own character.
+assert_eq!("ã".substring(0, 1), "a");  // As opposed to "ã".
+assert_eq!("ã".substring(1, 2), "\u{0303}")
 ```
 
-The above example occurs because "y̆" is technically made up of two UTF-8 scalar values.
+The above example occurs because "ã" is technically made up of two UTF-8 scalar values.

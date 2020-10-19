@@ -27,11 +27,11 @@
 //! ```
 //! use substring::Substring;
 //!
-//! assert_eq!("y̆".substring(0, 1), "y");  // As opposed to "y̆".
-//! assert_eq!("y̆".substring(1, 2), "\u{0306}")  // The diacritical mark counts as its own character.
+//! assert_eq!("ã".substring(0, 1), "a");  // As opposed to "ã".
+//! assert_eq!("ã".substring(1, 2), "\u{0303}")
 //! ```
 //!
-//! The above example occurs because "y̆" is technically made up of two UTF-8 scalar values.
+//! The above example occurs because "ã" is technically made up of two UTF-8 scalar values.
 
 /// Provides a `substring` method.
 ///
