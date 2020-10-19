@@ -50,11 +50,15 @@ impl Substring for str {
             return "";
         }
 
-        let mut indices = self.char_indices().map(|(index, _char)| index);
+        let mut indices = self.char_indices();
 
-        &self[indices.nth(start_index).unwrap_or(self.len())
+        &self[indices
+            .nth(start_index)
+            .map(|(index, _char)| index)
+            .unwrap_or(self.len())
             ..indices
                 .nth(end_index - start_index - 1)
+                .map(|(index, _char)| index)
                 .unwrap_or(self.len())]
     }
 }
