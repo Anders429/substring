@@ -7,9 +7,8 @@ matrix:
     - rust: stable
       env:
         - LABEL="no_std"
-      install:
-        - rustup target add thumbv6m-none-eabi
       script:
+        - rustup target add thumbv6m-none-eabi
         - cargo test --target=thumbv6m-none-eabi
     - rust: stable
     - rust: nightly
