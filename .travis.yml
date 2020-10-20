@@ -12,6 +12,7 @@ matrix:
         - LABEL="no_std"
       script:
         - rustup target add thumbv6m-none-eabi
+        - cargo build --target=thumbv6m-none-eabi --verbose
         - cargo test --target=thumbv6m-none-eabi --verbose
     - rust: stable
     - rust: nightly
