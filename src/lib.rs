@@ -80,7 +80,7 @@ impl Substring for str {
 
 #[cfg(test)]
 mod tests {
-    use crate::Substring;
+    use Substring;
 
     #[test]
     fn test_substring() {

@@ -1,6 +1,7 @@
 [![Crates.io](https://img.shields.io/crates/v/substring)](https://crates.io/crates/substring)
 ![Crates.io](https://img.shields.io/crates/l/substring)
 [![Docs.rs](https://docs.rs/substring/badge.svg)](https://docs.rs/substring)
+![MSRV](https://img.shields.io/badge/rustc-1.0+-green.svg)
 
 Substring method for string types.
 
@@ -20,15 +21,8 @@ use substring::Substring;
 assert_eq!("hello, world!".substring(7, 12), "world");
 ```
 
-# Performance
-
-As Rust strings are UTF-8 encoded, the algorithm for finding a character substring has temporal
-complexity `O(n)`, where `n` is the byte length of the string. This is due to characters not being
-of predictible byte lengths.
-
-# Note
-The indexing of substrings is based on Unicode Scalar Value. As such, substrings may not always
-match your intuition:
+Notet that the indexing of substrings is based on Unicode Scalar Value. As such, substrings may not
+always match your intuition:
 
 ```rust
 use substring::Substring;
@@ -37,4 +31,15 @@ assert_eq!("ã".substring(0, 1), "a");  // As opposed to "ã".
 assert_eq!("ã".substring(1, 2), "\u{0303}")
 ```
 
-The above example occurs because "ã" is technically made up of two UTF-8 scalar values.
+The above example occurs because "ã" is technically made up of two UTF-8 scalar values: the letter
+"a" and a combining tilde.
+
+
+# Performance
+
+As Rust strings are UTF-8 encoded, the algorithm for finding a character substring has temporal
+complexity `O(n)`, where `n` is the byte length of the string. This is due to characters not being
+of predictible byte lengths.
+
+# Minimum Supported Rust Version
+This crate is guaranteed to compile on stable Rust 1.0 and up.
