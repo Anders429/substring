@@ -24,7 +24,7 @@ use substring::Substring;
 assert_eq!("hello, world!".substring(7, 12), "world");
 ```
 
-Notet that the indexing of substrings is based on Unicode Scalar Value. As such, substrings may not
+Note that the indexing of substrings is based on Unicode Scalar Value. As such, substrings may not
 always match your intuition:
 
 ```rust
