@@ -1,6 +1,6 @@
 [![Crates.io](https://img.shields.io/crates/v/substring)](https://crates.io/crates/substring)
 [![Docs.rs](https://docs.rs/substring/badge.svg)](https://docs.rs/substring)
-[![MSRV](https://img.shields.io/badge/rustc-1.0+-green.svg)](https://github.com/Anders429/substring#minimum-supported-rust-version)
+[![MSRV](https://img.shields.io/badge/rustc-1.6+-green.svg)](https://github.com/Anders429/substring#minimum-supported-rust-version)
 ![License](https://img.shields.io/crates/l/substring)
 
 Substring method for string types.
@@ -42,4 +42,4 @@ complexity `O(n)`, where `n` is the byte length of the string. This is due to ch
 of predictible byte lengths.
 
 # Minimum Supported Rust Version
-This crate is guaranteed to compile on stable Rust 1.0 and up.
+This crate is guaranteed to compile on stable Rust 1.6 and up.
