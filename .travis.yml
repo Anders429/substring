@@ -1,0 +1,18 @@
+language: rust
+matrix:
+  include:
+    - rust: 1.0.0
+      env:
+        - LABEL="msrv"
+    - rust: stable
+      env:
+        - LABEL="no_std"
+      install:
+        - rustup target add thumbv6m-none-eabi
+      script:
+        - cargo test --target=thumbv6m-none-eabi
+    - rust: stable
+    - rust: nightly
+    - rust: beta
+  allow_failures:
+    - rust: nightly
