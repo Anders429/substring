@@ -1,7 +1,7 @@
 [![Crates.io](https://img.shields.io/crates/v/substring)](https://crates.io/crates/substring)
-![Crates.io](https://img.shields.io/crates/l/substring)
 [![Docs.rs](https://docs.rs/substring/badge.svg)](https://docs.rs/substring)
-![MSRV](https://img.shields.io/badge/rustc-1.0+-green.svg)
+[![MSRV](https://img.shields.io/badge/rustc-1.0+-green.svg)](https://github.com/Anders429/substring#minimum-supported-rust-version)
+![License](https://img.shields.io/crates/l/substring)
 
 Substring method for string types.
 
