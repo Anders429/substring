@@ -33,6 +33,8 @@
 //!
 //! The above example occurs because "ã" is technically made up of two UTF-8 scalar values.
 
+#![no_std]
+
 /// Provides a `substring` method.
 ///
 /// The `substring` method obtains a string slice of characters within the range specified by
