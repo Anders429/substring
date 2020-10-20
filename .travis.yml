@@ -4,12 +4,15 @@ matrix:
     - rust: 1.0.0
       env:
         - LABEL="msrv"
+      script:
+        - cargo generate-lockfile
+        - cargo test --verbose
     - rust: stable
       env:
         - LABEL="no_std"
       script:
         - rustup target add thumbv6m-none-eabi
-        - cargo test --target=thumbv6m-none-eabi
+        - cargo test --target=thumbv6m-none-eabi --verbose
     - rust: stable
     - rust: nightly
     - rust: beta
