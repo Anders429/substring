@@ -3,7 +3,7 @@
 //! This crate provides a `substring` method on Rust string types. The method takes a start and end
 //! character index and returns a string slice of the characters within that range.
 //!
-//! The method is provided via the `Substring` trait which is implemented on the `&str` primitive.
+//! The method is provided via the `Substring` trait which is implemented on the `str` primitive.
 //!
 //! # Example
 //! ```
@@ -47,7 +47,10 @@ pub trait Substring {
     fn substring(&self, start_index: usize, end_index: usize) -> &str;
 }
 
-/// Provides a `substring` method for `&str`.
+/// Provides a `substring` method for `str`.
+///
+/// Note that structs which implement `Deref<Target=str>` (such as `String`) will also have access
+/// to this implementation.
 impl Substring for str {
     /// Obtain a slice of the characters within the range of `start_index` and `end_index`.
     ///

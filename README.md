@@ -11,7 +11,7 @@ Substring method for string types.
 This crate provides a `substring` method on Rust string types. The method takes a start and end
 character index and returns a string slice of the characters within that range.
 
-The method is provided via the `Substring` trait which is implemented on the `&str` primitive.
+The method is provided via the `Substring` trait which is implemented on the `str` primitive.
 
 ## Usage
 
