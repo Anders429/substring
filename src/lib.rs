@@ -55,7 +55,7 @@ impl Substring for str {
     /// Obtain a slice of the characters within the range of `start_index` and `end_index`.
     ///
     /// As this is by character index, rather than byte index, the temporal complexity of finding a
-    /// substring is `O(n)`.
+    /// substring is *O(n)*, where *n* is the byte length of the string.
     ///
     /// Example:
     /// ```

@@ -41,7 +41,7 @@ The above example occurs because "ã" is technically made up of two UTF-8 scala
 ## Performance
 
 As Rust strings are UTF-8 encoded, the algorithm for finding a character substring has temporal
-complexity `O(n)`, where `n` is the byte length of the string. This is due to characters not being
+complexity *O(n)*, where *n* is the byte length of the string. This is due to characters not being
 of predictible byte lengths.
 
 ## Minimum Supported Rust Version
