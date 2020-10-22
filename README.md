@@ -1,9 +1,9 @@
 # substring
 
-[![Travis-ci.org](https://img.shields.io/travis/Anders429/substring)](https://travis-ci.org/github/Anders429/substring)
-[![Crates.io](https://img.shields.io/crates/v/substring)](https://crates.io/crates/substring)
-[![Docs.rs](https://docs.rs/substring/badge.svg)](https://docs.rs/substring)
-[![MSRV](https://img.shields.io/badge/rustc-1.6+-yellow.svg)](https://github.com/Anders429/substring#minimum-supported-rust-version)
+[![travis-ci.org](https://img.shields.io/travis/Anders429/substring)](https://travis-ci.org/github/Anders429/substring)
+[![crates.io](https://img.shields.io/crates/v/substring)](https://crates.io/crates/substring)
+[![docs.rs](https://docs.rs/substring/badge.svg)](https://docs.rs/substring)
+[![MSRV](https://img.shields.io/badge/rustc-1.6+-yellow.svg)](#minimum-supported-rust-version)
 ![License](https://img.shields.io/crates/l/substring)
 
 Substring method for string types.
