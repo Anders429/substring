@@ -42,6 +42,8 @@
 
 #![no_std]
 
+#![deny(missing_docs)]
+
 /// Provides a [`substring()`] method.
 ///
 /// The [`substring()`] method obtains a string slice of characters within the range specified by
