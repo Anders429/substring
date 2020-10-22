@@ -1,9 +1,10 @@
 //! Substring method for string types.
 //!
-//! This crate provides a `substring` method on Rust string types. The method takes a start and end
-//! character index and returns a string slice of the characters within that range.
+//! This crate provides a [`substring()`] method on Rust string types. The method takes a start and
+//! end character index and returns a string slice of the characters within that range.
 //!
-//! The method is provided via the `Substring` trait which is implemented on the `&str` primitive.
+//! The method is provided via the [`Substring`] trait which is implemented on the [`str`]
+//! primitive.
 //!
 //! # Example
 //! ```
@@ -21,8 +22,8 @@
 //! byte lengths.
 //!
 //! # Note
-//! The indexing of substrings is based on Unicode Scalar Value. As such, substrings may not always
-//! match your intuition:
+//! The indexing of substrings is based on [*Unicode Scalar Value*]. As such, substrings may not
+//! always match your intuition:
 //!
 //! ```
 //! use substring::Substring;
@@ -32,13 +33,23 @@
 //! ```
 //!
 //! The above example occurs because "ã" is technically made up of two UTF-8 scalar values.
+//!
+//! [`str`]: https://doc.rust-lang.org/std/primitive.str.html
+//! [`Substring`]: trait.Substring.html
+//! [`substring()`]: trait.Substring.html#tymethod.substring
+//!
+//! [*Unicode Scalar Value*]: http://www.unicode.org/glossary/#unicode_scalar_value
 
 #![no_std]
 
-/// Provides a `substring` method.
+#![deny(missing_docs)]
+
+/// Provides a [`substring()`] method.
 ///
-/// The `substring` method obtains a string slice of characters within the range specified by
+/// The [`substring()`] method obtains a string slice of characters within the range specified by
 /// `start_index` and `end_index`.
+///
+/// [`substring()`]: trait.Substring.html#tymethod.substring
 pub trait Substring {
     /// Obtains a string slice containing the characters within the range specified by
     /// `start_index` and `end_index`.
@@ -47,12 +58,19 @@ pub trait Substring {
     fn substring(&self, start_index: usize, end_index: usize) -> &str;
 }
 
-/// Provides a `substring` method for `&str`.
+/// Implements a [`substring()`] method for [`str`].
+///
+/// Note that structs which implement `Deref<Target=str>` (such as [`String`]) will also have
+/// access to this implementation.
+///
+/// [`str`]: https://doc.rust-lang.org/std/primitive.str.html
+/// [`String`]: https://doc.rust-lang.org/std/string/struct.String.html
+/// [`substring()`]: trait.Substring.html#method.substring
 impl Substring for str {
     /// Obtain a slice of the characters within the range of `start_index` and `end_index`.
     ///
     /// As this is by character index, rather than byte index, the temporal complexity of finding a
-    /// substring is `O(n)`.
+    /// substring is *O(n)*, where *n* is the byte length of the string.
     ///
     /// Example:
     /// ```
