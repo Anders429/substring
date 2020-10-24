@@ -85,15 +85,16 @@ impl Substring for str {
         let mut indices = self.char_indices();
 
         let obtain_index = |(index, _char)| index;
+        let len = || self.len();
 
         &self[indices
             .nth(start_index)
             .map(&obtain_index)
-            .unwrap_or(self.len())
+            .unwrap_or_else(&len)
             ..indices
                 .nth(end_index - start_index - 1)
                 .map(&obtain_index)
-                .unwrap_or(self.len())]
+                .unwrap_or_else(&len)]
     }
 }
 
