@@ -1,9 +1,15 @@
 language: rust
 matrix:
   include:
-    - rust: 1.6.0
+    - rust: 1.0.0
       env:
         - LABEL="msrv"
+      script:
+        - cargo generate-lockfile
+        - cargo test --verbose
+    - rust: 1.6.0
+      env:
+        - LABEL="1.6.0_build_file"
       script:
         - cargo generate-lockfile
         - cargo test --verbose

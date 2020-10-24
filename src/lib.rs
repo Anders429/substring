@@ -40,7 +40,7 @@
 //!
 //! [*Unicode Scalar Value*]: http://www.unicode.org/glossary/#unicode_scalar_value
 
-#![no_std]
+#![cfg_attr(no_std, no_std)]
 #![deny(missing_docs)]
 
 /// Provides a [`substring()`] method.
