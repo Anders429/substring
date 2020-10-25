@@ -7,13 +7,6 @@ matrix:
       script:
         - cargo generate-lockfile
         - cargo test --verbose
-    - rust: 1.6.0
-      env:
-        - LABEL="msrv_no_std"
-      script:
-        - cargo generate-lockfile
-        - rustup target add thumbv6m-none-eabi
-        - cargo build --target thumbv6m-none-eabi --verbose
     - rust: stable
       env:
         - LABEL="no_std"
