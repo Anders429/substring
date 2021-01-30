@@ -1,6 +1,6 @@
 # substring
 
-[![travis-ci.org](https://img.shields.io/travis/Anders429/substring)](https://travis-ci.org/github/Anders429/substring)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/Anders429/substring/Tests)](https://github.com/Anders429/substring/actions)
 [![codecov.io](https://img.shields.io/codecov/c/gh/Anders429/substring)](https://codecov.io/gh/Anders429/substring)
 [![crates.io](https://img.shields.io/crates/v/substring)](https://crates.io/crates/substring)
 [![docs.rs](https://docs.rs/substring/badge.svg)](https://docs.rs/substring)
