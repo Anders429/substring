@@ -10,9 +10,10 @@
 Substring method for string types.
 
 This crate provides a `substring` method on Rust string types. The method takes a start and end
-character index and returns a string slice of the characters within that range.
+character index and returns a string slice containing the characters within that range.
 
-The method is provided via the `Substring` trait which is implemented on the `str` primitive.
+The method is provided via the `Substring` trait which is implemented on the
+[`str`](https://doc.rust-lang.org/std/primitive.str.html) primitive.
 
 ## Usage
 
@@ -47,4 +48,4 @@ complexity *O(n)*, where *n* is the byte length of the string. This is due to ch
 of predictible byte lengths.
 
 ## Minimum Supported Rust Version
-This crate is guaranteed to compile on stable Rust 1.0.0 and up.
+This crate is guaranteed to compile on stable `rustc 1.0.0` and up.
