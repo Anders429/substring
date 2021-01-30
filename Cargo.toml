@@ -1,6 +1,6 @@
 [package]
 name = "substring"
-version = "1.4.0"
+version = "1.4.1"
 authors = ["Anders Evensen"]
 description = "A substring method for string types."
 license = "MIT OR Apache-2.0"
@@ -8,7 +8,7 @@ keywords = ["substring", "string", "substr", "str", "slice"]
 categories = ["text-processing", "parsing", "algorithms", "no-std"]
 readme = "README.md"
 repository = "https://github.com/Anders429/substring"
-exclude = [".travis.yml"]
+exclude = [".github/*"]
 
 [build-dependencies]
 autocfg = "1.0.1"

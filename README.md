@@ -1,6 +1,6 @@
 # substring
 
-[![travis-ci.org](https://img.shields.io/travis/Anders429/substring/master)](https://travis-ci.org/github/Anders429/substring)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/Anders429/substring/Tests)](https://github.com/Anders429/substring/actions)
 [![codecov.io](https://img.shields.io/codecov/c/gh/Anders429/substring)](https://codecov.io/gh/Anders429/substring)
 [![crates.io](https://img.shields.io/crates/v/substring)](https://crates.io/crates/substring)
 [![docs.rs](https://docs.rs/substring/badge.svg)](https://docs.rs/substring)
@@ -10,9 +10,10 @@
 Substring method for string types.
 
 This crate provides a `substring` method on Rust string types. The method takes a start and end
-character index and returns a string slice of the characters within that range.
+character index and returns a string slice containing the characters within that range.
 
-The method is provided via the `Substring` trait which is implemented on the `str` primitive.
+The method is provided via the `Substring` trait which is implemented on the
+[`str`](https://doc.rust-lang.org/std/primitive.str.html) primitive.
 
 ## Usage
 
@@ -47,5 +48,4 @@ complexity *O(n)*, where *n* is the byte length of the string. This is due to ch
 of predictible byte lengths.
 
 ## Minimum Supported Rust Version
-This crate is guaranteed to compile on stable `rustc 1.0.0` and up. Use in a `no_std` Rust environment
-requires stable `rustc 1.6.0` and up.
+This crate is guaranteed to compile on stable `rustc 1.0.0` and up.
