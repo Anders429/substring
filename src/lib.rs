@@ -87,14 +87,21 @@ impl Substring for str {
         let obtain_index = |(index, _char)| index;
         let len = || self.len();
 
-        &self[indices
-            .nth(start_index)
-            .map(&obtain_index)
-            .unwrap_or_else(&len)
-            ..indices
-                .nth(end_index - start_index - 1)
-                .map(&obtain_index)
-                .unwrap_or_else(&len)]
+        unsafe {
+            // SAFETY: The index used will always be valid, since it is obtained from the string's
+            // CharIndices Iterator. Therefore, no bounds check is necessary. Using get_unchecked()
+            // gives a measurable performance benefit.
+            self.get_unchecked(
+                indices
+                    .nth(start_index)
+                    .map(&obtain_index)
+                    .unwrap_or_else(&len)
+                    ..indices
+                        .nth(end_index - start_index - 1)
+                        .map(&obtain_index)
+                        .unwrap_or_else(&len),
+            )
+        }
     }
 }
 
