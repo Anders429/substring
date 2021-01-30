@@ -46,8 +46,6 @@
 #[cfg(not(rustc_1_6))]
 extern crate std as core;
 
-use core::slice;
-
 /// Provides a [`substring()`] method.
 ///
 /// The [`substring()`] method obtains a string slice of characters within the range specified by
@@ -82,6 +80,7 @@ impl Substring for str {
     ///
     /// assert_eq!("foobar".substring(2,5), "oba");
     /// ```
+    #[must_use]
     fn substring(&self, start_index: usize, end_index: usize) -> &str {
         if end_index <= start_index {
             return "";
@@ -92,19 +91,16 @@ impl Substring for str {
         let obtain_index = |(index, _char)| index;
         let str_len = self.len();
 
-        let start = indices.nth(start_index).map_or(str_len, &obtain_index);
-        let len = indices
-            .nth(end_index - start_index - 1)
-            .map_or(str_len, &obtain_index)
-            - start;
         unsafe {
-            // SAFETY: Both start and len uphold the str invariants, since they were created using
-            // the CharIndices Iterator. Therefore, manipulating the bytes this way is completely
-            // sound.
-            core::str::from_utf8_unchecked(slice::from_raw_parts(
-                self.as_ptr().offset(start as isize),
-                len,
-            ))
+            // SAFETY: The bytes passed to from_utf8_unchecked hold to str invariants, since self's
+            // CharIndices Iterator is used to generate the range with which the bytes are indexed.
+            // Therefore, this usage will always be sound.
+            core::str::from_utf8_unchecked(
+                &self.as_bytes()[indices.nth(start_index).map_or(str_len, &obtain_index)
+                    ..indices
+                        .nth(end_index - start_index - 1)
+                        .map_or(str_len, &obtain_index)],
+            )
         }
     }
 }
