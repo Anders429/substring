@@ -94,12 +94,10 @@ impl Substring for str {
             self.get_unchecked(
                 indices
                     .nth(start_index)
-                    .map(&obtain_index)
-                    .unwrap_or_else(&len)
+                    .map_or_else(&len, &obtain_index)
                     ..indices
                         .nth(end_index - start_index - 1)
-                        .map(&obtain_index)
-                        .unwrap_or_else(&len),
+                        .map_or_else(&len, &obtain_index)
             )
         }
     }
