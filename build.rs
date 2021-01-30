@@ -1,5 +1,7 @@
+extern crate autocfg;
+
 fn main() {
-    if autocfg::new().probe_rustc_version(1, 6) {
-        autocfg::emit("no_std");
-    }
+    let ac = autocfg::new();
+    ac.emit_rustc_version(1, 6);
+    ac.emit_rustc_version(1, 20);
 }
