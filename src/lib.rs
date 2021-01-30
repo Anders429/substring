@@ -46,7 +46,7 @@
 #[cfg(not(rustc_1_6))]
 extern crate std as core;
 
-use core::ops::Range;
+use core::slice;
 
 /// Provides a [`substring()`] method.
 ///
@@ -60,30 +60,6 @@ pub trait Substring {
     ///
     /// The range specified is a character range, not a byte range.
     fn substring(&self, start_index: usize, end_index: usize) -> &str;
-}
-
-/// Extract the substring using `get_unchecked`.
-///
-/// This method is only available in rustc 1.20.0 and onward.
-#[cfg(rustc_1_20)]
-#[inline]
-fn extract_substring<'a>(s: &'a str, r: Range<usize>) -> &'a str {
-    unsafe {
-        // SAFETY: The index used will always be valid, since it is obtained from the string's
-        // CharIndices Iterator. Therefore, no bounds check is necessary. Using get_unchecked()
-        // gives a measurable performance benefit.
-        s.get_unchecked(r)
-    }
-}
-
-/// Extract the substring using regular indexing.
-///
-/// This is used in all rustc versions before 1.20.0, since the faster `get_unchecked` is not
-/// available. This causes a slight performance penalty, due to unnecessary bounds checking.
-#[cfg(not(rustc_1_20))]
-#[inline]
-fn extract_substring<'a>(s: &'a str, r: Range<usize>) -> &'a str {
-    &s[r]
 }
 
 /// Implements a [`substring()`] method for [`str`].
@@ -114,15 +90,22 @@ impl Substring for str {
         let mut indices = self.char_indices();
 
         let obtain_index = |(index, _char)| index;
-        let len = || self.len();
+        let str_len = self.len();
 
-        extract_substring(
-            self,
-            indices.nth(start_index).map_or_else(&len, &obtain_index)
-                ..indices
-                    .nth(end_index - start_index - 1)
-                    .map_or_else(&len, &obtain_index),
-        )
+        let start = indices.nth(start_index).map_or(str_len, &obtain_index);
+        let len = indices
+            .nth(end_index - start_index - 1)
+            .map_or(str_len, &obtain_index)
+            - start;
+        unsafe {
+            // SAFETY: Both start and len uphold the str invariants, since they were created using
+            // the CharIndices Iterator. Therefore, manipulating the bytes this way is completely
+            // sound.
+            core::str::from_utf8_unchecked(slice::from_raw_parts(
+                self.as_ptr().offset(start as isize),
+                len,
+            ))
+        }
     }
 }
 
