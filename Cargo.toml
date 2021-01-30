@@ -12,3 +12,10 @@ exclude = [".travis.yml"]
 
 [build-dependencies]
 autocfg = "1.0.1"
+
+[dev-dependencies]
+criterion = "0.3.3"
+
+[[bench]]
+name = "benchmarks"
+harness = false
