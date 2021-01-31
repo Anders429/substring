@@ -95,11 +95,13 @@ impl Substring for str {
             // SAFETY: The bytes passed to from_utf8_unchecked hold to str invariants, since self's
             // CharIndices Iterator is used to generate the range with which the bytes are indexed.
             // Therefore, this usage will always be sound.
+            // Additionally, the parameters for get_unchecked() will always be within self's bounds
+            // also due to the usage of CharIndices.
             core::str::from_utf8_unchecked(
-                &self.as_bytes()[indices.nth(start_index).map_or(str_len, &obtain_index)
+                &self.as_bytes().get_unchecked(indices.nth(start_index).map_or(str_len, &obtain_index)
                     ..indices
                         .nth(end_index - start_index - 1)
-                        .map_or(str_len, &obtain_index)],
+                        .map_or(str_len, &obtain_index)),
             )
         }
     }
