@@ -41,6 +41,9 @@
 //! [*Unicode Scalar Value*]: http://www.unicode.org/glossary/#unicode_scalar_value
 
 #![deny(missing_docs)]
+// Since the MSRV is 1.0.0, allowing usage of deprecated items is ok, as the replacements are likely
+// not available in early versions.
+#![allow(deprecated)]
 #![cfg_attr(rustc_1_6, no_std)]
 
 #[cfg(not(rustc_1_6))]
@@ -92,16 +95,14 @@ impl Substring for str {
         let str_len = self.len();
 
         unsafe {
-            // SAFETY: The bytes passed to from_utf8_unchecked hold to str invariants, since self's
-            // CharIndices Iterator is used to generate the range with which the bytes are indexed.
-            // Therefore, this usage will always be sound.
-            // Additionally, the parameters for get_unchecked() will always be within self's bounds
-            // also due to the usage of CharIndices.
-            core::str::from_utf8_unchecked(
-                &self.as_bytes().get_unchecked(indices.nth(start_index).map_or(str_len, &obtain_index)
-                    ..indices
-                        .nth(end_index - start_index - 1)
-                        .map_or(str_len, &obtain_index)),
+            // SAFETY: Since `indices` iterates over the `CharIndices` of `self`, we can guarantee
+            // that the indices obtained from it will always be within the bounds of `self` and they
+            // will always lie on UTF-8 sequence boundaries.
+            self.slice_unchecked(
+                indices.nth(start_index).map_or(str_len, &obtain_index),
+                indices
+                    .nth(end_index - start_index - 1)
+                    .map_or(str_len, &obtain_index),
             )
         }
     }
