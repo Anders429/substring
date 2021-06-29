@@ -51,6 +51,36 @@ use core::ops::{
     RangeBounds,
 };
 
+/// Extract a substring using the bounds of `index`, guided by the values yielded from `indices`.
+///
+/// # Safety
+/// The caller must ensure that the values in `indices` are within the bounds of `this` and lie on
+/// char boundaries of `this`.
+unsafe fn substring_from_indices<I: RangeBounds<usize>, J: Iterator<Item = usize>>(
+    this: &str,
+    index: I,
+    mut indices: J,
+) -> &str {
+    let len = this.len();
+    let start = match index.start_bound() {
+        Excluded(&start) => start.saturating_add(1),
+        Included(&start) => start,
+        Unbounded => 0,
+    };
+    let end = match index.end_bound() {
+        Excluded(&end) => end,
+        Included(&end) => end.saturating_add(1),
+        Unbounded => len,
+    };
+    if end <= start {
+        return "";
+    }
+
+    this.get_unchecked(
+        indices.nth(start).unwrap_or(len)..indices.nth(end - start - 1).unwrap_or(len),
+    )
+}
+
 /// Provides a [`substring()`] method.
 ///
 /// The [`substring()`] method obtains a string slice of characters within the range specified by
@@ -85,33 +115,13 @@ impl Substring for str {
     ///
     /// assert_eq!("foobar".substring(2..5), "oba");
     /// ```
+    #[inline]
     #[must_use]
     fn substring<I: RangeBounds<usize>>(&self, index: I) -> &str {
-        let len = self.len();
-        let start = match index.start_bound() {
-            Excluded(&start) => start.saturating_add(1),
-            Included(&start) => start,
-            Unbounded => 0,
-        };
-        let end = match index.end_bound() {
-            Excluded(&end) => end,
-            Included(&end) => end.saturating_add(1),
-            Unbounded => len,
-        };
-        if end <= start {
-            return "";
-        }
-        let mut indices = self.char_indices().map(|(i, _c)| i);
-
         unsafe {
-            // SAFETY: Since `indices` iterates over the `CharIndices` of `self`, we can guarantee
-            // that the indices obtained from it will always be within the bounds of `self` and they
-            // will always lie on UTF-8 sequence boundaries.// SAFETY: Since `indices` iterates over the `CharIndices` of `self`, we can guarantee
-            // that the indices obtained from it will always be within the bounds of `self` and they
-            // will always lie on UTF-8 sequence boundaries.
-            self.get_unchecked(
-                indices.nth(start).unwrap_or(len)..indices.nth(end - start - 1).unwrap_or(len),
-            )
+            // SAFETY: `self.char_indices()` will always return valid indices for char boundaries
+            // within `self`.
+            substring_from_indices(self, index, self.char_indices().map(|(i, _c)| i))
         }
     }
 }
