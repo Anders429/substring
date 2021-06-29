@@ -40,16 +40,21 @@
 //!
 //! [*Unicode Scalar Value*]: http://www.unicode.org/glossary/#unicode_scalar_value
 
-#![deny(missing_docs)]
+//#![deny(missing_docs)]
 // Since the MSRV is 1.0.0, allowing usage of deprecated items is ok, as the replacements are likely
 // not available in early versions.
 #![allow(deprecated)]
 #![no_std]
 
+#[cfg(feature = "unicode-segmentation")]
+extern crate unicode_segmentation;
+
 use core::ops::{
     Bound::{Excluded, Included, Unbounded},
     RangeBounds,
 };
+#[cfg(feature = "unicode-segmentation")]
+use unicode_segmentation::UnicodeSegmentation;
 
 /// Extract a substring using the bounds of `index`, guided by the values yielded from `indices`.
 ///
@@ -122,6 +127,23 @@ impl Substring for str {
             // SAFETY: `self.char_indices()` will always return valid indices for char boundaries
             // within `self`.
             substring_from_indices(self, index, self.char_indices().map(|(i, _c)| i))
+        }
+    }
+}
+
+pub trait GraphemeSubstring {
+    fn grapheme_substring<I: RangeBounds<usize>>(&self, index: I) -> &str;
+}
+
+#[cfg(feature = "grapheme")]
+impl GraphemeSubstring for str {
+    #[inline]
+    #[must_use]
+    fn grapheme_substring<I: RangeBounds<usize>>(&self, index: I) -> &str {
+        unsafe {
+            // SAFETY: `self.grapheme_indices()` will always return valid indices for char
+            // boundaries within `self`.
+            substring_from_indices(self, index, self.grapheme_indices(true).map(|(i, _c)| i))
         }
     }
 }
