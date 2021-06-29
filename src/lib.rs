@@ -44,10 +44,7 @@
 // Since the MSRV is 1.0.0, allowing usage of deprecated items is ok, as the replacements are likely
 // not available in early versions.
 #![allow(deprecated)]
-#![cfg_attr(rustc_1_6, no_std)]
-
-#[cfg(not(rustc_1_6))]
-extern crate std as core;
+#![no_std]
 
 use core::ops::{
     Bound::{Excluded, Included, Unbounded},
