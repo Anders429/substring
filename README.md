@@ -4,7 +4,7 @@
 [![codecov.io](https://img.shields.io/codecov/c/gh/Anders429/substring)](https://codecov.io/gh/Anders429/substring)
 [![crates.io](https://img.shields.io/crates/v/substring)](https://crates.io/crates/substring)
 [![docs.rs](https://docs.rs/substring/badge.svg)](https://docs.rs/substring)
-[![MSRV](https://img.shields.io/badge/rustc-1.0.0+-yellow.svg)](#minimum-supported-rust-version)
+[![MSRV](https://img.shields.io/badge/rustc-1.28.0+-yellow.svg)](#minimum-supported-rust-version)
 [![License](https://img.shields.io/crates/l/substring)](#license)
 
 Substring method for string types.
@@ -23,7 +23,7 @@ your string types.
 ```rust
 use substring::Substring;
 
-assert_eq!("hello, world!".substring(7, 12), "world");
+assert_eq!("hello, world!".substring(7..12), "world");
 ```
 
 Note that the indexing of substrings is based on
@@ -33,8 +33,8 @@ substrings may not always match your intuition:
 ```rust
 use substring::Substring;
 
-assert_eq!("ã".substring(0, 1), "a");  // As opposed to "ã".
-assert_eq!("ã".substring(1, 2), "\u{0303}")
+assert_eq!("ã".substring(0..1), "a");  // As opposed to "ã".
+assert_eq!("ã".substring(1..2), "\u{0303}")
 ```
 
 The above example occurs because "ã" is technically made up of two UTF-8 scalar values: the letter
@@ -48,7 +48,7 @@ complexity *O(n)*, where *n* is the byte length of the string. This is due to ch
 of predictible byte lengths.
 
 ## Minimum Supported Rust Version
-This crate is guaranteed to compile on stable `rustc 1.0.0` and up.
+This crate is guaranteed to compile on stable `rustc 1.28.0` and up.
 
 ## License
 This project is licensed under either of

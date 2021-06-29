@@ -11,10 +11,10 @@
 //! use substring::Substring;
 //!
 //! // Works on a string slice.
-//! assert_eq!("foobar".substring(2,5), "oba");
+//! assert_eq!("foobar".substring(2..5), "oba");
 //!
 //! // Also works on a String.
-//! assert_eq!("foobar".to_string().substring(1,6), "oobar");
+//! assert_eq!("foobar".to_string().substring(1..6), "oobar");
 //! ```
 //!
 //! As Rust strings are UTF-8 encoded, the algorithm for finding a character substring is `O(n)`,
@@ -28,8 +28,8 @@
 //! ```
 //! use substring::Substring;
 //!
-//! assert_eq!("ã".substring(0, 1), "a");  // As opposed to "ã".
-//! assert_eq!("ã".substring(1, 2), "\u{0303}")
+//! assert_eq!("ã".substring(0..1), "a");  // As opposed to "ã".
+//! assert_eq!("ã".substring(1..2), "\u{0303}")
 //! ```
 //!
 //! The above example occurs because "ã" is technically made up of two UTF-8 scalar values.
@@ -44,10 +44,15 @@
 // Since the MSRV is 1.0.0, allowing usage of deprecated items is ok, as the replacements are likely
 // not available in early versions.
 #![allow(deprecated)]
-#![cfg_attr(rustc_1_6, no_std)]
+#![no_std]
 
-#[cfg(not(rustc_1_6))]
-extern crate std as core;
+#[cfg(test)]
+extern crate more_ranges;
+
+use core::ops::{
+    Bound::{Excluded, Included, Unbounded},
+    RangeBounds,
+};
 
 /// Provides a [`substring()`] method.
 ///
@@ -60,7 +65,7 @@ pub trait Substring {
     /// `start_index` and `end_index`.
     ///
     /// The range specified is a character range, not a byte range.
-    fn substring(&self, start_index: usize, end_index: usize) -> &str;
+    fn substring<I: RangeBounds<usize>>(&self, index: I) -> &str;
 }
 
 /// Implements a [`substring()`] method for [`str`].
@@ -81,28 +86,34 @@ impl Substring for str {
     /// ```
     /// use substring::Substring;
     ///
-    /// assert_eq!("foobar".substring(2,5), "oba");
+    /// assert_eq!("foobar".substring(2..5), "oba");
     /// ```
     #[must_use]
-    fn substring(&self, start_index: usize, end_index: usize) -> &str {
-        if end_index <= start_index {
+    fn substring<I: RangeBounds<usize>>(&self, index: I) -> &str {
+        let len = self.len();
+        let start = match index.start_bound() {
+            Excluded(&start) => start.saturating_add(1),
+            Included(&start) => start,
+            Unbounded => 0,
+        };
+        let end = match index.end_bound() {
+            Excluded(&end) => end,
+            Included(&end) => end.saturating_add(1),
+            Unbounded => len,
+        };
+        if end <= start {
             return "";
         }
-
-        let mut indices = self.char_indices();
-
-        let obtain_index = |(index, _char)| index;
-        let str_len = self.len();
+        let mut indices = self.char_indices().map(|(i, _c)| i);
 
         unsafe {
             // SAFETY: Since `indices` iterates over the `CharIndices` of `self`, we can guarantee
             // that the indices obtained from it will always be within the bounds of `self` and they
+            // will always lie on UTF-8 sequence boundaries.// SAFETY: Since `indices` iterates over the `CharIndices` of `self`, we can guarantee
+            // that the indices obtained from it will always be within the bounds of `self` and they
             // will always lie on UTF-8 sequence boundaries.
-            self.slice_unchecked(
-                indices.nth(start_index).map_or(str_len, &obtain_index),
-                indices
-                    .nth(end_index - start_index - 1)
-                    .map_or(str_len, &obtain_index),
+            self.get_unchecked(
+                indices.nth(start).unwrap_or(len)..indices.nth(end - start - 1).unwrap_or(len),
             )
         }
     }
@@ -110,31 +121,71 @@ impl Substring for str {
 
 #[cfg(test)]
 mod tests {
+    use core::usize;
+    use more_ranges::RangeFromExclusive;
     use Substring;
 
     #[test]
     fn test_substring() {
-        assert_eq!("foobar".substring(0, 3), "foo");
+        assert_eq!("foobar".substring(0..3), "foo");
     }
 
     #[test]
     fn test_out_of_bounds() {
-        assert_eq!("foobar".substring(0, 10), "foobar");
-        assert_eq!("foobar".substring(6, 10), "");
+        assert_eq!("foobar".substring(0..10), "foobar");
+        assert_eq!("foobar".substring(6..10), "");
     }
 
     #[test]
     fn test_start_less_than_end() {
-        assert_eq!("foobar".substring(3, 2), "");
+        assert_eq!("foobar".substring(3..2), "");
     }
 
     #[test]
     fn test_start_and_end_equal() {
-        assert_eq!("foobar".substring(3, 3), "");
+        assert_eq!("foobar".substring(3..3), "");
     }
 
     #[test]
     fn test_multiple_byte_characters() {
-        assert_eq!("fõøbα®".substring(2, 5), "øbα");
+        assert_eq!("fõøbα®".substring(2..5), "øbα");
+    }
+
+    #[test]
+    fn test_unbounded() {
+        assert_eq!("foobar".substring(..), "foobar");
+    }
+
+    #[test]
+    fn test_unbounded_start() {
+        assert_eq!("foobar".substring(..3), "foo");
+    }
+
+    #[test]
+    fn test_unbounded_end() {
+        assert_eq!("foobar".substring(3..), "bar");
+    }
+
+    #[test]
+    fn test_exclusive_start() {
+        assert_eq!("foobar".substring(RangeFromExclusive { start: 3 }), "ar");
+    }
+
+    #[test]
+    fn test_exclusive_start_max() {
+        assert_eq!(
+            "foobar".substring(RangeFromExclusive { start: usize::MAX }),
+            ""
+        );
+    }
+
+    #[test]
+    fn test_inclusive_end() {
+        assert_eq!("foobar".substring(..=3), "foob");
+    }
+
+    #[test]
+    fn test_inclusive_end_max() {
+        assert_eq!("foobar".substring(..=usize::MAX), "foobar");
     }
 }

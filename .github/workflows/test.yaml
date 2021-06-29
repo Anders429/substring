@@ -2,9 +2,7 @@ name: Tests
 
 on:
   push:
-    branches: [ master ]
   pull_request:
-    branches: [ master ]
 
 env:
   CARGO_TERM_COLOR: always
@@ -18,7 +16,7 @@ jobs:
           - stable
           - beta
           - nightly
-          - 1.0.0
+          - 1.28.0
     steps:
     - uses: actions/checkout@v2
     - uses: actions-rs/toolchain@v1
