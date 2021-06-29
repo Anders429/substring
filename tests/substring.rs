@@ -6,53 +6,53 @@ use std::usize;
 use substring::Substring;
 
 #[test]
-fn test_substring() {
+fn substring() {
     assert_eq!("foobar".substring(0..3), "foo");
 }
 
 #[test]
-fn test_out_of_bounds() {
+fn out_of_bounds() {
     assert_eq!("foobar".substring(0..10), "foobar");
     assert_eq!("foobar".substring(6..10), "");
 }
 
 #[test]
-fn test_start_less_than_end() {
+fn start_less_than_end() {
     assert_eq!("foobar".substring(3..2), "");
 }
 
 #[test]
-fn test_start_and_end_equal() {
+fn start_and_end_equal() {
     assert_eq!("foobar".substring(3..3), "");
 }
 
 #[test]
-fn test_multiple_byte_characters() {
+fn multiple_byte_characters() {
     assert_eq!("fõøbα®".substring(2..5), "øbα");
 }
 
 #[test]
-fn test_unbounded() {
+fn unbounded() {
     assert_eq!("foobar".substring(..), "foobar");
 }
 
 #[test]
-fn test_unbounded_start() {
+fn unbounded_start() {
     assert_eq!("foobar".substring(..3), "foo");
 }
 
 #[test]
-fn test_unbounded_end() {
+fn unbounded_end() {
     assert_eq!("foobar".substring(3..), "bar");
 }
 
 #[test]
-fn test_exclusive_start() {
+fn exclusive_start() {
     assert_eq!("foobar".substring(RangeFromExclusive { start: 3 }), "ar");
 }
 
 #[test]
-fn test_exclusive_start_max() {
+fn exclusive_start_max() {
     assert_eq!(
         "foobar".substring(RangeFromExclusive { start: usize::MAX }),
         ""
@@ -60,11 +60,11 @@ fn test_exclusive_start_max() {
 }
 
 #[test]
-fn test_inclusive_end() {
+fn inclusive_end() {
     assert_eq!("foobar".substring(..=3), "foob");
 }
 
 #[test]
-fn test_inclusive_end_max() {
+fn inclusive_end_max() {
     assert_eq!("foobar".substring(..=usize::MAX), "foobar");
 }
