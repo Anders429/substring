@@ -8,7 +8,7 @@ keywords = ["substring", "string", "substr", "str", "slice"]
 categories = ["text-processing", "parsing", "algorithms", "no-std"]
 readme = "README.md"
 repository = "https://github.com/Anders429/substring"
-exclude = [".github/*"]
+include = ["src/*", "Cargo.toml", "LICENSE-*", "README.md"]
 
 [dev-dependencies]
 more_ranges = "0.1.0"
