@@ -155,32 +155,35 @@ mod tests {
     fn test_unbounded() {
         assert_eq!("foobar".substring(..), "foobar");
     }
-    
+
     #[test]
     fn test_unbounded_start() {
         assert_eq!("foobar".substring(..3), "foo");
     }
-    
+
     #[test]
     fn test_unbounded_end() {
         assert_eq!("foobar".substring(3..), "bar");
     }
-    
+
     #[test]
     fn test_exclusive_start() {
-        assert_eq!("foobar".substring(RangeFromExclusive {start: 3}), "ar");
+        assert_eq!("foobar".substring(RangeFromExclusive { start: 3 }), "ar");
     }
-    
+
     #[test]
     fn test_exclusive_start_max() {
-        assert_eq!("foobar".substring(RangeFromExclusive {start: usize::MAX}), "");
+        assert_eq!(
+            "foobar".substring(RangeFromExclusive { start: usize::MAX }),
+            ""
+        );
     }
-    
+
     #[test]
     fn test_inclusive_end() {
         assert_eq!("foobar".substring(..=3), "foob");
     }
-    
+
     #[test]
     fn test_inclusive_end_max() {
         assert_eq!("foobar".substring(..=usize::MAX), "foobar");
