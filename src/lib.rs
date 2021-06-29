@@ -8,13 +8,13 @@
 //!
 //! # Example
 //! ```
-//! use substring::Substring;
+//! use substring::CharSubstring;
 //!
 //! // Works on a string slice.
-//! assert_eq!("foobar".substring(2..5), "oba");
+//! assert_eq!("foobar".char_substring(2..5), "oba");
 //!
 //! // Also works on a String.
-//! assert_eq!("foobar".to_string().substring(1..6), "oobar");
+//! assert_eq!("foobar".to_string().char_substring(1..6), "oobar");
 //! ```
 //!
 //! As Rust strings are UTF-8 encoded, the algorithm for finding a character substring is `O(n)`,
@@ -26,10 +26,10 @@
 //! always match your intuition:
 //!
 //! ```
-//! use substring::Substring;
+//! use substring::CharSubstring;
 //!
-//! assert_eq!("ã".substring(0..1), "a");  // As opposed to "ã".
-//! assert_eq!("ã".substring(1..2), "\u{0303}")
+//! assert_eq!("ã".char_substring(0..1), "a");  // As opposed to "ã".
+//! assert_eq!("ã".char_substring(1..2), "\u{0303}")
 //! ```
 //!
 //! The above example occurs because "ã" is technically made up of two UTF-8 scalar values.
@@ -92,12 +92,12 @@ unsafe fn substring_from_indices<I: RangeBounds<usize>, J: Iterator<Item = usize
 /// `start_index` and `end_index`.
 ///
 /// [`substring()`]: trait.Substring.html#tymethod.substring
-pub trait Substring {
+pub trait CharSubstring {
     /// Obtains a string slice containing the characters within the range specified by
     /// `start_index` and `end_index`.
     ///
     /// The range specified is a character range, not a byte range.
-    fn substring<I: RangeBounds<usize>>(&self, index: I) -> &str;
+    fn char_substring<I: RangeBounds<usize>>(&self, index: I) -> &str;
 }
 
 /// Implements a [`substring()`] method for [`str`].
@@ -108,7 +108,7 @@ pub trait Substring {
 /// [`str`]: https://doc.rust-lang.org/std/primitive.str.html
 /// [`String`]: https://doc.rust-lang.org/std/string/struct.String.html
 /// [`substring()`]: trait.Substring.html#method.substring
-impl Substring for str {
+impl CharSubstring for str {
     /// Obtain a slice of the characters within the range of `start_index` and `end_index`.
     ///
     /// As this is by character index, rather than byte index, the temporal complexity of finding a
@@ -116,13 +116,13 @@ impl Substring for str {
     ///
     /// Example:
     /// ```
-    /// use substring::Substring;
+    /// use substring::CharSubstring;
     ///
-    /// assert_eq!("foobar".substring(2..5), "oba");
+    /// assert_eq!("foobar".char_substring(2..5), "oba");
     /// ```
     #[inline]
     #[must_use]
-    fn substring<I: RangeBounds<usize>>(&self, index: I) -> &str {
+    fn char_substring<I: RangeBounds<usize>>(&self, index: I) -> &str {
         unsafe {
             // SAFETY: `self.char_indices()` will always return valid indices for char boundaries
             // within `self`.
