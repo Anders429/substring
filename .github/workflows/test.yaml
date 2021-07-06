@@ -8,7 +8,7 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  test:
+  default_features:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -17,6 +17,25 @@ jobs:
           - beta
           - nightly
           - 1.28.0
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions-rs/toolchain@v1
+      with:
+        toolchain: ${{ matrix.rust }}
+        override: true
+    - uses: actions-rs/cargo@v1
+      with:
+        command: test
+
+  all_features:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        rust:
+          - stable
+          - beta
+          - nightly
+          - 1.32.0
     steps:
     - uses: actions/checkout@v2
     - uses: actions-rs/toolchain@v1
